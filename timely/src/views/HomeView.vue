@@ -18,5 +18,25 @@ onMounted(async () => {
   <div>
     <h2>Activité</h2>
     <p><small>API ping:</small> {{ ping || '…' }}</p>
+    
+    <div class="buttons-container">
+      <router-link to="/profil">
+        <button>Profil</button>
+      </router-link>
+      <router-link to="/projets">
+        <button>Projets</button>
+      </router-link>
+      <router-link to="/activites">
+        <button>Activités</button>
+      </router-link>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.buttons-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+</style>
