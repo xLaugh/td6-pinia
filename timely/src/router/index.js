@@ -13,7 +13,10 @@ const routes = [
     component: () => import('../views/LayoutView.vue'),
     meta: { requiresAuth: true },
     children: [
-      { path: '', name: 'Home', component: () => import('../views/HomeView.vue') }
+      { path: '', name: 'Home', component: () => import('../views/HomeView.vue') },
+      { path: 'profil', name: 'Profil', component: () => import('../views/ProfilView.vue') },
+      { path: 'projets', name: 'Projets', component: () => import('../views/ProjetsView.vue') },
+      { path: 'activites', name: 'Activites', component: () => import('../views/ActivitesView.vue') }
     ]
   }
 ]
