@@ -25,7 +25,16 @@
       </div>
       <ul v-else>
         <li v-for="project in projects" :key="project.id">
-          {{ project.name }} - {{ project.description || 'Sans description' }}
+          <div v-if="editingId !== project.id">
+            {{ project.name }} - {{ project.description || 'Sans description' }}
+            <button @click="startEdit(project)">Modifier</button>
+          </div>
+          <form v-else @submit.prevent="updateProject(project.id)" class="edit-form">
+            <input v-model="editName" type="text" required />
+            <input v-model="editDescription" type="text" />
+            <button type="submit" :disabled="loading">Enregistrer</button>
+            <button type="button" @click="cancelEdit">Annuler</button>
+          </form>
         </li>
       </ul>
     </div>
@@ -40,6 +49,9 @@ const name = ref('')
 const description = ref('')
 const loading = ref(false)
 const projects = ref([])
+const editingId = ref(null)
+const editName = ref('')
+const editDescription = ref('')
 
 const loadProjects = async () => {
   try {
@@ -68,6 +80,35 @@ const createProject = async () => {
     loadProjects()
   } catch (e) {
     console.error('Erreur lors de la création du projet:', e)
+  } finally {
+    loading.value = false
+  }
+}
+
+const startEdit = (project) => {
+  editingId.value = project.id
+  editName.value = project.name
+  editDescription.value = project.description || ''
+}
+
+const cancelEdit = () => {
+  editingId.value = null
+  editName.value = ''
+  editDescription.value = ''
+}
+
+const updateProject = async (projectId) => {
+  loading.value = true
+  try {
+    await api.put(`/api/projects/${projectId}`, {
+      name: editName.value,
+      description: editDescription.value || undefined
+    })
+    alert('Projet modifié avec succès')
+    editingId.value = null
+    loadProjects()
+  } catch (e) {
+    console.error('Erreur lors de la modification du projet:', e)
   } finally {
     loading.value = false
   }
@@ -103,5 +144,18 @@ const createProject = async () => {
 
 .projects-list li {
   padding: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.edit-form input {
+  padding: 5px;
 }
 </style>
