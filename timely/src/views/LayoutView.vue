@@ -15,7 +15,10 @@ function logout() {
   <div>
     <header>
       <router-link to="/">Timely</router-link>
-      <button type="button" @click="logout">Déconnexion</button>
+      <div>
+        <router-link to="/profil">Paramètres</router-link>
+        <button type="button" @click="logout">Déconnexion</button>
+      </div>
     </header>
     <main>
       <router-view />
@@ -24,6 +27,20 @@ function logout() {
 </template>
 
 <style scoped>
-header { display: flex; justify-content: space-between; padding: 0.5rem 1rem; border-bottom: 1px solid #ddd; }
-main { padding: 1rem; }
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+header > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+main {
+  padding: 1rem;
+}
 </style>
